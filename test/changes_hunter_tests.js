@@ -15,7 +15,7 @@ const fsMock = {
       },
     };
   },
-  pathExistsSync: () => {
+  existsSync: () => {
     return true;
   },
 };

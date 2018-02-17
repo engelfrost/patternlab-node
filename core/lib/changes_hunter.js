@@ -75,7 +75,7 @@ ChangesHunter.prototype = {
    * @param {string} file
    */
   checkLastModified: function(currentPattern, file) {
-    if (file && fs.pathExistsSync(file)) {
+    if (file && fs.existsSync(file)) {
       try {
         const stat = fs.statSync(file);
 
