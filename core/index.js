@@ -57,6 +57,9 @@ const patternlab_module = function(config) {
   const patternlab = new PatternLab(config);
   const paths = patternlab.config.paths;
 
+  // Should this be moved into ./lib/patternlab.js?
+  const assetHandlers = {};
+
   function help() {
     logger.info('');
 
@@ -369,7 +372,7 @@ const patternlab_module = function(config) {
       patternlab.isBusy = true;
       return buildPatterns(options.cleanPublic, options.data).then(() => {
         return new ui_builder().buildFrontend(patternlab).then(() => {
-          copier()
+          copier(assetHandlers)
             .copyAndWatch(patternlab.config.paths, patternlab, options)
             .then(() => {
               this.events.once(events.PATTERNLAB_PATTERN_CHANGE, () => {
@@ -490,6 +493,11 @@ const patternlab_module = function(config) {
     },
 
     events: patternlab.events,
+
+    assetHandler: function(key, handler) {
+      // Should this be moved into ./lib/patternlab.js?
+      assetHandlers[key] = handler;
+    },
   };
 };
 

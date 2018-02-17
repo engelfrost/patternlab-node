@@ -7,7 +7,7 @@ const copyFile = require('./copyFile');
 const watchAssets = require('./watchAssets');
 const watchPatternLabFiles = require('./watchPatternLabFiles');
 
-const copier = () => {
+const copier = assetHandlers => {
   const transform_paths = directories => {
     //create array with all source keys minus our blacklist
     const dirs = {};
@@ -60,9 +60,18 @@ const copier = () => {
     _.each(dirs, (dir, key) => {
       //if we want to watch files, do so, otherwise just copy each file
       if (options.watch) {
-        watchAssets(patternlab, basePath, dir, key, copyOptions);
+        watchAssets(
+          patternlab,
+          basePath,
+          dir,
+          key,
+          copyOptions,
+          false,
+          assetHandlers[key]
+        );
       } else {
         //just copy
+        // TODO: A non-watched build should also use assetHandlers
         const destination = path.resolve(basePath, dir.public);
         copyPromises.push(copyFile(dir.source, destination, copyOptions));
       }
